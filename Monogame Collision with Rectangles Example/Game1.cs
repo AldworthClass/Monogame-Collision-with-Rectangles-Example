@@ -9,6 +9,15 @@ namespace Monogame_Collision_with_Rectangles_Example
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        // Textures
+        Texture2D pacLeftTexture;
+        Texture2D pacRightTexture;
+        Texture2D pacUpTexture;
+        Texture2D pacDownTexture;
+        Texture2D currentPacTexture;
+        Re
+
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
