@@ -9,7 +9,8 @@ namespace Monogame_Collision_with_Rectangles_Example
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        KeyboardState state;
+        KeyboardState keyboardState;
+        MouseState mouseState;
 
         // Textures
         Texture2D pacLeftTexture;
@@ -86,27 +87,28 @@ namespace Monogame_Collision_with_Rectangles_Example
 
         protected override void Update(GameTime gameTime)
         {
-            state = Keyboard.GetState();
+            keyboardState = Keyboard.GetState();
+            mouseState = Mouse.GetState();
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || keyboardState.IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (state.IsKeyDown(Keys.Left))
+            if (keyboardState.IsKeyDown(Keys.Left))
             {
                 pacRect.X -= pacSpeed;
                 currentPacTexture = pacLeftTexture;
             }
-            if (state.IsKeyDown(Keys.Right))
+            if (keyboardState.IsKeyDown(Keys.Right))
             {
                 pacRect.X += pacSpeed;               
                 currentPacTexture = pacRightTexture;
             }
-            if (state.IsKeyDown(Keys.Up))
+            if (keyboardState.IsKeyDown(Keys.Up))
             {
                 pacRect.Y -= pacSpeed;
                 currentPacTexture = pacUpTexture;
             }
-            if (state.IsKeyDown(Keys.Down))
+            if (keyboardState.IsKeyDown(Keys.Down))
             {
                 pacRect.Y += pacSpeed;
                 currentPacTexture = pacDownTexture;
