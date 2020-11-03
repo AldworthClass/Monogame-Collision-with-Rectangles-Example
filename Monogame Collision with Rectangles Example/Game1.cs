@@ -41,11 +41,10 @@ namespace Monogame_Collision_with_Rectangles_Example
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            pacSpeed = 3;
-
-
+            
             base.Initialize();
-
+            
+            pacSpeed = 3;
             pacRect = new Rectangle(10, 10, 60, 60);
 
             barrierRect1 = new Rectangle(0, 250, 350, 75);
@@ -61,7 +60,6 @@ namespace Monogame_Collision_with_Rectangles_Example
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
 
             // TODO: use this.Content to load your game content here
 
@@ -86,6 +84,8 @@ namespace Monogame_Collision_with_Rectangles_Example
 
         protected override void Update(GameTime gameTime)
         {
+            // TODO: Add your update logic here
+
             state = Keyboard.GetState();
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -112,8 +112,10 @@ namespace Monogame_Collision_with_Rectangles_Example
                 currentPacTexture = pacDownTexture;
             }
 
-
-            // TODO: Add your update logic here
+            if (pacRect.Intersects(coinRect))
+            {
+                coinRect.Location = new Point(800, 480);
+            }
 
             base.Update(gameTime);
         }
@@ -135,6 +137,7 @@ namespace Monogame_Collision_with_Rectangles_Example
             _spriteBatch.End();
 
             base.Draw(gameTime);
+
         }
     }
 }
