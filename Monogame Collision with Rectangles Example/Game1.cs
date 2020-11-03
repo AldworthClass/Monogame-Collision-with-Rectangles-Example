@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace Monogame_Collision_with_Rectangles_Example
 {
@@ -27,7 +28,7 @@ namespace Monogame_Collision_with_Rectangles_Example
         Rectangle barrierRect1, barrierRect2;
 
         Texture2D coinTexture;
-        Rectangle coinRect;
+        List<Rectangle> coins;
 
         int pacSpeed;        
 
@@ -51,7 +52,11 @@ namespace Monogame_Collision_with_Rectangles_Example
             barrierRect2 = new Rectangle(450, 250, 350, 75);
 
             // It is better to make a texture the size you want it to be in the program so ot doesn't need to be scaled uppon drawing
-            coinRect = new Rectangle(400, 50, coinTexture.Width, coinTexture.Height);   
+            coins = new List<Rectangle>();
+            coins.Add(new Rectangle(400, 50, coinTexture.Width, coinTexture.Height));
+            coins.Add(new Rectangle(475, 50, coinTexture.Width, coinTexture.Height));
+            coins.Add(new Rectangle(200, 350, coinTexture.Width, coinTexture.Height));
+            coins.Add(new Rectangle(400, 350, coinTexture.Width, coinTexture.Height));
 
             exitRect = new Rectangle(700, 380, 100, 100);
 
@@ -112,12 +117,16 @@ namespace Monogame_Collision_with_Rectangles_Example
                 currentPacTexture = pacDownTexture;
             }
 
-            if (pacRect.Intersects(coinRect))
+            for (int i = 0; i < coins.Count; i++)
             {
-                coinRect.Location = new Point(800, 480);
+                if (pacRect.Intersects(coins[i]))
+                {
+                    coins.RemoveAt(i);
+                    i--;
+                }
             }
-
-            base.Update(gameTime);
+          
+            base.Update(gameTime);        
         }
 
         protected override void Draw(GameTime gameTime)
@@ -132,7 +141,8 @@ namespace Monogame_Collision_with_Rectangles_Example
             _spriteBatch.Draw(barrierTexture, barrierRect2, Color.White);
             _spriteBatch.Draw(exitTexture, exitRect, Color.White);
             _spriteBatch.Draw(currentPacTexture, pacRect, Color.White);
-            _spriteBatch.Draw(coinTexture, coinRect, Color.White);
+            foreach(Rectangle coin in coins)
+                _spriteBatch.Draw(coinTexture, coin, Color.White);
 
             _spriteBatch.End();
 
