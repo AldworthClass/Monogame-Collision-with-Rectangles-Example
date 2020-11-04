@@ -102,21 +102,53 @@ namespace Monogame_Collision_with_Rectangles_Example
             {
                 pacRect.X -= pacSpeed;
                 currentPacTexture = pacLeftTexture;
+                if (pacRect.Intersects(barrierRect1))
+                {
+                    pacRect.X = barrierRect1.Right;
+                }
+                if (pacRect.Intersects(barrierRect2))
+                {
+                    pacRect.X = barrierRect2.Right;
+                }
             }
             if (keyboardState.IsKeyDown(Keys.Right))
             {
                 pacRect.X += pacSpeed;               
                 currentPacTexture = pacRightTexture;
+                if (pacRect.Intersects(barrierRect1))
+                {
+                    pacRect.X = barrierRect1.Left - pacRect.Width;
+                }
+                if (pacRect.Intersects(barrierRect2))
+                {
+                    pacRect.X = barrierRect2.Left - pacRect.Width;
+                }
             }
             if (keyboardState.IsKeyDown(Keys.Up))
             {
                 pacRect.Y -= pacSpeed;
                 currentPacTexture = pacUpTexture;
+                if (pacRect.Intersects(barrierRect1))
+                {
+                    pacRect.Y = barrierRect1.Bottom;
+                }
+                if (pacRect.Intersects(barrierRect2))
+                {
+                    pacRect.Y = barrierRect2.Bottom;
+                }
             }
             if (keyboardState.IsKeyDown(Keys.Down))
             {
                 pacRect.Y += pacSpeed;
                 currentPacTexture = pacDownTexture;
+                if (pacRect.Intersects(barrierRect1))
+                {
+                    pacRect.Y = barrierRect1.Top - pacRect.Height;
+                }
+                if (pacRect.Intersects(barrierRect2))
+                {
+                    pacRect.Y = barrierRect2.Top - pacRect.Height;
+                }
             }
 
             // Iterates through our list of coins by index and removes collisions
