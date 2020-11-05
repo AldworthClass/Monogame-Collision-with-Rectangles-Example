@@ -10,8 +10,8 @@ namespace Monogame_Collision_with_Rectangles_Example
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        KeyboardState keyboardState;
-        MouseState mouseState;
+        KeyboardState keyboardState, keyboardPreviousState;
+        MouseState mouseState, mousePreviousState;
 
         // Textures
         Texture2D pacLeftTexture;
@@ -54,7 +54,8 @@ namespace Monogame_Collision_with_Rectangles_Example
             barriers.Add(new Rectangle(0, 250, 350, 75));
             barriers.Add(new Rectangle(450, 250, 350, 75));
 
-            // It is better to make a texture the size you want it to be in the program so ot doesn't need to be scaled uppon drawing
+            // It is better to make a texture the size you want it to be before importing it into your project
+            // so it doesn't need to be scaled each time it is drawn
             coins = new List<Rectangle>();
             coins.Add(new Rectangle(400, 50, coinTexture.Width, coinTexture.Height));
             coins.Add(new Rectangle(475, 50, coinTexture.Width, coinTexture.Height));
@@ -93,8 +94,10 @@ namespace Monogame_Collision_with_Rectangles_Example
         protected override void Update(GameTime gameTime)
         {
             // TODO: Add your update logic here
-
+            keyboardPreviousState = keyboardState;
             keyboardState = Keyboard.GetState();
+
+            mousePreviousState = mouseState;
             mouseState = Mouse.GetState();
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || keyboardState.IsKeyDown(Keys.Escape))
@@ -105,6 +108,8 @@ namespace Monogame_Collision_with_Rectangles_Example
                 pacRect.X -= pacSpeed;
                 currentPacTexture = pacLeftTexture;
                 foreach (Rectangle barrier in barriers)
+                    // We could simply undo the previous movement applied (pacRect.X += pacSpeed), however, this may lead to a small 
+                    // gap between our character and barrier.
                     if (pacRect.Intersects(barrier))
                     {
                         pacRect.X = barrier.Right;
@@ -151,13 +156,18 @@ namespace Monogame_Collision_with_Rectangles_Example
                     i--;    // We must reduce our index by one because we removed an item from our list
                 }
             }
+
+            // Here is an alternative to the above loop using RemoveAll() with a Predicate condition of intersection
+            // coins.RemoveAll(coin => pacRect.Intersects(coin));
             
-            // Check for an exit witht he door
-            if(mouseState.LeftButton == ButtonState.Pressed)
+            // Check for an exit with the door if door is clicked
+            if(mouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton != mousePreviousState.LeftButton)
             {
                 if (exitRect.Contains(mouseState.X, mouseState.Y))
                     Exit();
             }
+
+            // Check for an exit if PacMan is on the door
             if (exitRect.Contains(pacRect))
                 Exit();
 
